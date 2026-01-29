@@ -1,0 +1,16 @@
+# root
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+
+# frontend
+Frontend/dist/
+Frontend/.vite/
+
+# backend
+Backend/node_modules/
+Backend/.env
+Backend/.env.*
