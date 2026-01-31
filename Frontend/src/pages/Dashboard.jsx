@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiRequest, API_BASE } from '../api.js';
-import { clearToken, decodeToken, getToken } from '../auth.js';
+import { clearToken, decodeToken } from '../auth.js';
 
-export default function Dashboard() {
+export default function Dashboard({ token, onLogout }) {
   const navigate = useNavigate();
-  const token = getToken();
   const user = useMemo(() => decodeToken(token), [token]);
   const [profileLink, setProfileLink] = useState('');
   const [messages, setMessages] = useState([]);
@@ -17,6 +16,9 @@ export default function Dashboard() {
     const lowered = message.toLowerCase();
     if (lowered.includes('invalid') || lowered.includes('expired') || lowered.includes('missing')) {
       clearToken();
+      if (onLogout) {
+        onLogout();
+      }
       navigate('/');
       return true;
     }
@@ -47,6 +49,9 @@ export default function Dashboard() {
 
   const logout = () => {
     clearToken();
+    if (onLogout) {
+      onLogout();
+    }
     navigate('/');
   };
 

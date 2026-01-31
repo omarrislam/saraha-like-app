@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { apiRequest } from '../api.js';
 import { setToken } from '../auth.js';
 
-export default function AuthPage() {
+export default function AuthPage({ onAuth }) {
   const navigate = useNavigate();
   const [mode, setMode] = useState('login');
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -33,6 +33,9 @@ export default function AuthPage() {
       });
 
       setToken(data.token);
+      if (onAuth) {
+        onAuth(data.token);
+      }
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);
